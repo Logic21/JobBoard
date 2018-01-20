@@ -1,0 +1,50 @@
+/* MAIN STYLING*/
+
+.error{
+    color:red;
+}
+.pagination-links{
+    margin:30px 0;
+}
+
+.pagination-links strong{
+    padding: 8px 13px;
+    margin:5px;
+    background: #f4f4f4;
+    border: 1px #ccc solid;
+}
+
+a.pagination-link{
+    padding: 8px 13px;
+    margin:5px;
+    background: #f4f4f4;
+    border: 1px #ccc solid;
+}
+
+
+/*JOBS LISTING*/
+.jobListingTitle{
+	margin-bottom:50px;
+}
+.jobListing p{
+	font-weight:bold;
+}.jobListing span{
+	font-weight:normal;
+}
+
+/*JOB POSTING*/
+#jobPosting p{
+	 font-weight:bold;
+}
+#jobPosting  span{
+	font-weight:normal;
+}
+#desc{
+	margin-top: 50px;
+}
+#desc p{
+	font-weight:normal;
+}
+#editposting{
+	margin-top: 50px;
+}
