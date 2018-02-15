@@ -26,8 +26,8 @@ class Jobs_model extends CI_Model{
         $this->db->join('occupations', 'occupations.id = jobs.occupation');
         $this->db->join('locations', 'locations.id = jobs.location');
 		
-		$this->db->where('dateposted <=',date("o-m-d",strtotime("now")));
-        $this->db->where('dateending >=',date("o-m-d",strtotime("now")));
+		$this->db->where('date_posted <=',date("o-m-d",strtotime("now")));
+        $this->db->where('date_ending >=',date("o-m-d",strtotime("now")));
 		
 		//return all jobs
         if($jobnum==FALSE && empty($where))
@@ -58,12 +58,12 @@ class Jobs_model extends CI_Model{
      * Function: create
      * Purpose: This method is responsible for inserting a new job posting into the database
      * Params:  $jobnum: the random job number generated
-				$dateposted: the current date, should be a datetime object
-				$dateending: the last day the job posting is valid
+				$date_posted: the current date, should be a datetime object
+				$date_ending: the last day the job posting is valid
 				$daysValid: number of days that the posting is valid
      * Return: none
      */
-    public function create($jobnum, $dateposted, $dateending,$daysValid)
+    public function create($jobnum, $date_posted, $date_ending,$daysValid)
     {
         $data= array(
             'jobnum'=>$jobnum,
@@ -72,8 +72,8 @@ class Jobs_model extends CI_Model{
             'title'=>$this->input->post('title'),
             'description'=>  $this->input->post('desc'),
             'location'=>  $this->input->post('location'),
-            'dateposted'=>  $dateposted,
-			'dateending'=> $dateending,
+            'date_posted'=>  $date_posted,
+			'date_ending'=> $date_ending,
             'salary'=>$this->input->post('salary'),
             'emptype'=>  $this->input->post('emptype'),
             'numopenings'=>  $this->input->post('openings'),
@@ -102,23 +102,33 @@ class Jobs_model extends CI_Model{
      * Params:  $jobnum: the job number of the job posting to update
      * Return: none
      */
-    public function update($jobnum,$dateending)
+    public function update($jobnum,$date_ending, $daysvalid)
     {
         $data= array(
             'occupation'=>$this->input->post('occupation'),
             'title'=>$this->input->post('title'),
-			'dateending'=> $dateending,
+			'date_ending'=> $date_ending,
             'description'=>  $this->input->post('desc'),
             'location'=>  $this->input->post('location'),
             'salary'=>$this->input->post('salary'),
             'emptype'=>  $this->input->post('emptype'),
             'numopenings'=>  $this->input->post('openings'),
+			'daysvalid'=>  $this->input->post('daysvalid'),
         );
 		$this->security->xss_clean($data);
         $this->db->where('jobnum', $jobnum);
         $this->db->update('jobs', $data);
     }
-	
+	/*
+     * Function: get_dateposted
+     * Purpose: This method is responsible for retrieving a job's posting date 
+     * Params:  $jobnum: the jobnum of the date to get
+     * Return: the posting date of the specified job
+     */
+	function get_dateposted($jobnum){
+		$query = $this->db->get_where('jobs', array('jobnum'=>$jobnum));
+		return $query->row_array()['date_posted'];
+	}
 	
 	
 	

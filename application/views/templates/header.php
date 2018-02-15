@@ -8,10 +8,13 @@ if($this->session->userdata('logged_in')){
 <html>
     <head>
         <title>Job Board</title>
+		<meta name="viewport" content="initial-scale=1.0">
+		<meta charset="utf-8">
         <link rel="stylesheet" href="https://bootswatch.com/3/paper/bootstrap.min.css" />
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/style.css">
+		<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/scripts/main.js"></script>
         <script src="http://cdn.ckeditor.com/4.7.1/standard/ckeditor.js"></script>
     </head>

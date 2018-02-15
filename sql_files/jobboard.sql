@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 18, 2018 at 07:55 PM
+-- Generation Time: Feb 08, 2018 at 08:05 PM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -28,18 +28,18 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `jobs` (
   `id` int(11) NOT NULL,
-  `jobnum` int(11) DEFAULT NULL,
+  `jobnum` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
-  `occupation` int(11) DEFAULT NULL,
-  `location` int(11) DEFAULT NULL,
-  `title` varchar(50) DEFAULT NULL,
-  `description` varchar(8000) DEFAULT NULL,
-  `date_posted` datetime DEFAULT NULL,
-  `date_ending` datetime DEFAULT NULL,
+  `occupation` int(11) NOT NULL,
+  `location` int(11) NOT NULL,
+  `title` varchar(50) NOT NULL,
+  `description` varchar(8000) NOT NULL,
+  `date_posted` datetime NOT NULL,
+  `date_ending` datetime NOT NULL,
   `daysvalid` int(11) NOT NULL,
-  `salary` varchar(20) DEFAULT NULL,
-  `empType` varchar(20) DEFAULT NULL,
-  `numopenings` int(11) DEFAULT NULL
+  `salary` varchar(20) NOT NULL,
+  `empType` varchar(20) NOT NULL,
+  `numopenings` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -81,10 +81,17 @@ CREATE TABLE `users` (
   `fax` varchar(20) DEFAULT NULL,
   `email` varchar(100) NOT NULL,
   `username` varchar(20) NOT NULL,
-  `password` varchar(20) NOT NULL,
+  `password` varchar(100) NOT NULL,
   `register_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `password_reset_token` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `address`, `pcode`, `city`, `prov`, `phone`, `fax`, `email`, `username`, `password`, `register_date`, `password_reset_token`) VALUES
+(2, 'kdjgbk', 'jbkdjfgb', 'A1A 1A1', 'ljbfgdkj', 'Alberta', '111-111-1111', '111-111-1111', 'abc@abc.org', 'username', '$2y$10$Ou0GCgVLm5OM3lwyx.AAMuhV6ZlvzuJrScTaQRscbf5qgrw2jcLkC', '2018-02-09 02:05:04', NULL);
 
 --
 -- Indexes for dumped tables
@@ -96,8 +103,8 @@ CREATE TABLE `users` (
 ALTER TABLE `jobs`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`),
-  ADD KEY `occ_id` (`occupation`),
-  ADD KEY `loc_id` (`location`);
+  ADD KEY `occupation` (`occupation`),
+  ADD KEY `location` (`location`);
 
 --
 -- Indexes for table `locations`
@@ -117,6 +124,30 @@ ALTER TABLE `occupations`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `jobs`
+--
+ALTER TABLE `jobs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `locations`
+--
+ALTER TABLE `locations`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `occupations`
+--
+ALTER TABLE `occupations`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- Constraints for dumped tables
 --

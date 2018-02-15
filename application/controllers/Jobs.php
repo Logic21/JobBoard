@@ -152,7 +152,7 @@ class Jobs extends CI_Controller{
         }
         
         $this->form_validation->set_rules('title', 'Title', 'required|max_length[255]');
-        $this->form_validation->set_rules('occupation', 'occupation', 'required');
+        $this->form_validation->set_rules('occupation', 'Occupation', 'required');
         $this->form_validation->set_rules('desc', 'Description', 'required');
         $this->form_validation->set_rules('location', 'Location', 'required');
         $this->form_validation->set_rules('daysvalid', 'Days Valid', 'required|is_natural_no_zero|max_length[31]');
@@ -174,11 +174,13 @@ class Jobs extends CI_Controller{
         {
 			
 
-			$daysInSecs= $this->input->post('daysvalid')*24*60*60;
-			$endInSecs = strtotime($this->input->post('dateposted')) + $daysInSecs;
+			$daysValid = $this->input->post('daysvalid');
+			$dateposted = $this->jobs_model->get_dateposted($jobnum);			
+			$daysInSecs= $daysValid*24*60*60;
+			$endInSecs = strtotime($dateposted) + $daysInSecs;
 			$dateending = date("o-m-d",$endInSecs);
 
-            $this->jobs_model->update($jobnum,$dateending);
+            $this->jobs_model->update($jobnum,$dateending, $daysValid);
 			$this->session->set_flashdata('job_updated','The job posting has been successfully updated.');
             redirect('jobs/'.$jobnum);
         }
@@ -264,7 +266,13 @@ class Jobs extends CI_Controller{
         }
         else
         {
-            $data['title'] = "No jobs for " . str_replace("_","/",$value) . " under the category ". ucwords($field);
+			if($field == "occupation")
+			{
+				$data['title'] = "No jobs available in the category of " . ucwords(str_replace("_","/",$value));
+			}else if($field == "location"){
+				$data['title'] = "No jobs located in " . ucwords(str_replace("_","/",$value));
+			}
+            
             
             $this->load->view('templates/header');
             $this->load->view('jobs/index',$data);
@@ -300,7 +308,7 @@ class Jobs extends CI_Controller{
      * Params:  none
      * Return: none
      */
-	public function querystr()
+	public function jobsearch()
 	{
 		
 		//break down the url 

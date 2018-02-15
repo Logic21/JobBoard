@@ -7,6 +7,7 @@
 </div>
 <div class="form-group">
     <label>Location</label>
+
     <select name="location" class="form-control">
         <?php foreach($locations as $loc): ?>
 			<?php

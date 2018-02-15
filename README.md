@@ -17,7 +17,8 @@ This is a little project I put together using the PHP framework CodeIgniter.
  * User Account Page
  * Delete account and all posts
  * Set up querystrings
+ * Add google maps to contact page
 ## Features To Implemented 
  * Styling
- * Add google maps to contact page
+
  * And more to come...

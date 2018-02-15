@@ -48,3 +48,13 @@ a.pagination-link{
 #editposting{
 	margin-top: 50px;
 }
+
+/*MAP*/
+
+#map {
+	height: 300px;
+	width: 300px;
+}
+#contact_info{
+	margin-bottom: 50px;
+}

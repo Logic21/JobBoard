@@ -11,12 +11,12 @@
 	<p class="name">Employer: <span><?php echo $this->user_model->get_empname($job['user_id']);?></span></p>
 	<p class="loc">Location: <span><a href="<?php echo base_url()?>jobs/search/location/<?php echo $location; ?>"><?php echo $location; ?></a></span></p>
 	<p class="occ">Job Occupation: <span><a href="<?php echo base_url()?>jobs/search/occupation/<?php echo $occupation; ?>"><?php echo $occupation; ?></a></span></p>
-	<p class="emptype">Employment Type: <span><?php echo $job['emptype'];?></span></p>
+	<p class="emptype">Employment Type: <span><?php echo $job['empType'];?></span></p>
 	<p class="salary">Salary: <span><?php echo $job['salary'];?></span></p>
 	
 	<p class="numop">Number of Openings: <span><?php echo $job['numopenings'];?></span></p>
-	<p class="datePos">Date Posted: <span><?php echo date('F j, Y',strtotime($job['dateposted'])); ?></span></p>
-	<p class="dateEnd">Apply By: <span><?php echo date('F j, Y',strtotime($job['dateending'])); ?></span></p>
+	<p class="datePos">Date Posted: <span><?php echo date('F j, Y',strtotime($job['date_posted'])); ?></span></p>
+	<p class="dateEnd">Apply By: <span><?php echo date('F j, Y',strtotime($job['date_ending'])); ?></span></p>
 	<div id="desc">
 		<h4 class="descH">Description:</h4>
 		<?php echo $job['description'];?>

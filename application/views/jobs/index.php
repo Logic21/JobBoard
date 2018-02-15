@@ -19,12 +19,8 @@ if(!$jobs)
 		
 		<p class="location">Location: <span><?php echo $this->jobs_model->get_location_byid($job["location"])["name"] ?></span></p>
 		<p class="occ">Job Occupation: <span><?php echo $this->jobs_model->get_occupation_byid($job["occupation"])["name"] ?></span></p>
-		
-		<!--
-		<p class="location">Location: <span><a href="php //echo base_url()?>jobs/search/location/php //echo $location; ?>">php echo //$location; ?></a></span></p>
-		<p class="occ">Job Occupation: <span><a href="php //echo base_url()?>jobs/search/occupation/php //echo $occupation; ?>">php echo //$occupation; ?></a></span></p>
-		-->
-		<p class="date">Date Posted: <span><?php echo date('F j, Y',strtotime($job['dateposted'])); ?></span></p>
+
+		<p class="date">Date Posted: <span><?php echo date('F j, Y',strtotime($job['date_posted'])); ?></span></p>
 		<hr>
 	</div>
 <?php endforeach; ?>

@@ -13,6 +13,7 @@ class User_model extends CI_Model{
 			'phone' => $this->input->post('phone'),
 			'fax' => $this->input->post('fax')
         );
+
 		$this->security->xss_clean($data);
         return $this->db->insert('users', $data);
     }
@@ -20,7 +21,7 @@ class User_model extends CI_Model{
 
         $this->db->where('username', $username);
         $result = $this->db->get('users');
-		
+
         if($result->num_rows() == 1){
 			$hash = $result->row(0)->password;
 			

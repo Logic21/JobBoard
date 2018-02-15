@@ -3,6 +3,10 @@ class Users extends CI_Controller{
 	
 	public function index()
 	{
+		if(!$this->session->userdata('user_id'))
+		{
+			redirect('users/login');
+		}
 		$userid= $this->session->userdata('user_id');
 		$currUser = $this->user_model->get_userinfo($userid);
 
@@ -75,9 +79,7 @@ class Users extends CI_Controller{
         } 
         else {
             $username = $this->input->post('username');
-            //$password = md5($this->input->post('password'));
 			$password = $this->input->post('password');
-			
 			
             $user_id = $this->user_model->login($username, $password);
             if($user_id){
