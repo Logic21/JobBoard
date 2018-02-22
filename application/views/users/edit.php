@@ -1,7 +1,7 @@
 <h2><?= $title; ?></h2>
 
 
-<?php echo form_open('users/update/'.$user["id"]); ?>
+<?php echo form_open('users/edit/'.$user["id"]); ?>
     <div class="form-group">
         <label>Business Name</label>
         <input type="text" class="form-control" name="name" placeholder="name" value='<?php echo $user['name']; ?>'/>

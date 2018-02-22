@@ -163,6 +163,8 @@ class User_model extends CI_Model{
 			'phone' => $this->input->post('phone'),
 			'fax' => $this->input->post('fax')
         );
+		
+		
 		$this->security->xss_clean($data);
 		$this->db->where('id', $user_id);
         $this->db->update('users', $data);

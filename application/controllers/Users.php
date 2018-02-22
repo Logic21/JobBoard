@@ -267,75 +267,63 @@ class Users extends CI_Controller{
      */
     public function edit($user_id)
     {
+
         if(!$this->session->userdata('logged_in') && $userid == $this->session->userdata('user_id')){
             redirect('users/login');
         }
-        
-        $data['title'] = 'Edit User Account';
-        $data['user'] = $this->user_model->get_userinfo($user_id); 
-        
-        if(empty($data['user']))
-        {
-            show_404();
-        }
-        
-        
-        $this->load->view('templates/header');
-        $this->load->view('users/edit',$data);
-        $this->load->view('templates/footer');
-    }
-	
-	/*
-     * Function: update
-     * Purpose: This is the controller used for post from the edit users page
-     *          URL is /jobs/users/USER_ID
-     * Params:  $user_id: Identifies which specific user
-     * Return: none
-     */
-	 //NOT WORKING RIGHT NOW
-    public function update($user_id)
-    {
-		
-        $this->form_validation->set_rules('name', 'Name', 'required');
+		$data['title'] = 'Edit User Account';
+		$this->form_validation->set_rules('name', 'Name', 'required');
 		$this->form_validation->set_rules('addr', 'Address', 'required');
 		$this->form_validation->set_rules('prov', 'Province', 'required');
 		$this->form_validation->set_rules('city', 'City', 'required');
 		$this->form_validation->set_rules('phone', 'Phone', 'required|regex_match[/^\d{3}-\d{3}-\d{4}$/]');
 		$this->form_validation->set_rules('fax', 'Fax', 'regex_match[/^\d{3}-\d{3}-\d{4}$/]');
 		$this->form_validation->set_rules('pcode', 'Postal Code', 'required|regex_match[/^[A-Z][0-9][A-Z]\s[0-9][A-Z][0-9]$/]');
-        $this->form_validation->set_rules('username', 'Username', 'required|is_unique[users.username]');
-        $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[users.email]');
-        //$this->form_validation->set_rules('password', 'Password', 'required|callback_checkpwdmatch');
-        if($this->form_validation->run() === FALSE){
-            
-			$data['title'] = 'Edit User Account';
+        $this->form_validation->set_rules('username', 'Username', 'required|callback_check_username_exists_or_unique');
+        $this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_check_email_exists_or_unique');
+        $this->form_validation->set_rules('password', 'Password', 'required|callback_checkpwdmatch');
+
+		if($this->form_validation->run() === FALSE)
+		{
+
 			$data['user'] = $this->user_model->get_userinfo($user_id); 
-			
-            $this->load->view('templates/header');
-            $this->load->view('users/edit', $data);
-            $this->load->view('templates/footer');
+			if(empty($data['user']))
+			{
+				show_404();
+			}
+			else
+			{
+				$this->load->view('templates/header');
+				$this->load->view('users/edit', $data);
+				$this->load->view('templates/footer');
+			}
+            
         }
-        else{
+        else
+		{
             $this->user_model->update($user_id);
 
             $this->session->set_flashdata('user_updated', 'Your account is now updated.');
             redirect('users');
             
         }
-		
-		
-        redirect('users');
+        
     }
 	
+
+	 
+
+	//How to get callbacks to work: https://forum.codeigniter.com/thread-64657.html
 	/*
      * Function: checkpwdmatch
      * Purpose: This is a callback method used to check if the password 
 				entered by a user matches that user's password in the database
-     * Params: $pwd: password user entered
+     * Params: $password: password user entered
      * Return: True if password belongs to the user, false otherwise
      */
-	public function checkpwdmatch($pwd)
+	public function checkpwdmatch($password)
 	{
+		
 		$this->db->where('id', $this->session->userdata('user_id'));
         $result = $this->db->get('users');
 		
@@ -348,14 +336,74 @@ class Users extends CI_Controller{
 			}
 			else
 			{
-				return false;
+				$this->form_validation->set_message('checkpwdmatch', 'Incorrect password');
+				return FALSE;
 			}
             
 			
 			
-        } else {
-            return false;
-        }
+        } 
+		
+		$this->form_validation->set_message('checkpwdmatch', 'The password field can not be empty');
+		return FALSE;
+        
+	}
+	
+	/*
+     * Function: check_username_exists_or_unique
+     * Purpose: This is a callback method used to check if the new 
+				username a user has entered exists and is not their own
+     * Params: $username: username user entered
+     * Return: True if username is their own or is unique, false if username is not unique 
+     */
+	public function check_username_exists_or_unique($username)
+	{
+
+		$user = $this->session->userdata('username');
+		if($user != $username)
+		{
+			$this->db->where('username', $username);
+			$result = $this->db->get('users');
+			
+			if($result->row(0))
+			{
+				$this->form_validation->set_message('check_username_exists_or_unique', 'This username is taken by someone else');
+				return FALSE;
+			}
+			return TRUE;
+		
+		}
+		return TRUE;
+        
+	}
+	
+	
+	/*
+     * Function: check_email_exists_or_unique
+     * Purpose: This is a callback method used to check if the new 
+				email a user has entered exists and is not their own
+     * Params: $email: username user entered
+     * Return: True if email is their own or is unique, false if email is not unique 
+     */
+	public function check_email_exists_or_unique($email)
+	{
+
+		$user = $this->session->userdata('email');
+		if($user != $email)
+		{
+			$this->db->where('email', $email);
+			$result = $this->db->get('users');
+			
+			if($result->row(0))
+			{
+				$this->form_validation->set_message('check_email_exists_or_unique', 'This email is taken by someone else');
+				return FALSE;
+			}
+			return TRUE;
+		
+		}
+		return TRUE;
+        
 	}
 	
 }
